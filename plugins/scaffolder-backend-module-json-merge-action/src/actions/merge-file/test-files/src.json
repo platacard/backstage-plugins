@@ -1,0 +1,19 @@
+{
+  "$merge": {
+    "source": {
+      "$import": "file-1.json"
+    },
+    "with": {
+      "test_array": [
+        {
+          "$match": {
+            "query": "$[?(@.key==\"myapp\")]",
+            "value": {
+              "values": { "$concat": ["4", "5", "6"] }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

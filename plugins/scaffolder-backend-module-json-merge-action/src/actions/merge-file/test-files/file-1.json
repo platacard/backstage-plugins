@@ -1,0 +1,8 @@
+{
+  "test_array": [
+    {
+      "key": "myapp",
+      "values": ["1", "2", "3"]
+    }
+  ]
+}
