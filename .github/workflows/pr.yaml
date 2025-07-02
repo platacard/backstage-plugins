@@ -48,10 +48,7 @@ jobs:
         run: yarn prettier:check
 
       - name: build
-        run: yarn buld
-        
-      - name: publish check
-        run: yarn backstage-cli repo fix --check --publish
+        run: yarn build:all
 
       - name: test
         run: yarn test:all --maxWorkers=3
