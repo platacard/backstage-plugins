@@ -15,9 +15,7 @@ export const YamlMerge = createBackendModule({
         scaffolder: scaffolderActionsExtensionPoint,
       },
       async init({ scaffolder }) {
-        scaffolder.addActions(
-          createYamlMergeAction(),
-        );
+        scaffolder.addActions(createYamlMergeAction());
       },
     });
   },

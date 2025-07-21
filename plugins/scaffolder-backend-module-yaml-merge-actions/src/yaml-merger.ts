@@ -19,7 +19,7 @@ export class YamlMerger {
   constructor(
     baseFilePath: string,
     overlayFilePath: string,
-    options: MergeOptions
+    options: MergeOptions,
   ) {
     this.baseYAML = this.loadYAML(path.join(options.cwd, baseFilePath));
     this.overlayYAML = this.loadYAML(path.join(options.cwd, overlayFilePath));
@@ -37,13 +37,13 @@ export class YamlMerger {
           // Check if the sequence has a commentBefore
           if (node.commentBefore) {
             const { commentBefore } = node; // Extract the comment
-            delete node.commentBefore;      // Remove the comment from the sequence
+            delete node.commentBefore; // Remove the comment from the sequence
             if (node.items.length > 0) {
-            // Move the comment to the first item in the sequence
+              // Move the comment to the first item in the sequence
               (node.items[0] as YAML.Node).commentBefore = commentBefore;
             }
           }
-        }
+        },
       });
       return doc;
     } catch (e) {
@@ -64,7 +64,10 @@ export class YamlMerger {
       overlay.items.forEach((overlayItem: any) => {
         const baseItem = base.get(overlayItem.key);
         if (baseItem) {
-          base.set(overlayItem.key, this.deepMerge(baseItem, overlayItem.value));
+          base.set(
+            overlayItem.key,
+            this.deepMerge(baseItem, overlayItem.value),
+          );
         } else {
           base.set(overlayItem.key, overlayItem.value);
         }
@@ -81,7 +84,9 @@ export class YamlMerger {
   private mergeArrays(baseArray: any[], overlayArray: any[]): any[] {
     switch (this.arrayMergeStrategy) {
       case 'concat':
-        return this.prependOnConcat ? overlayArray.concat(baseArray) : baseArray.concat(overlayArray);
+        return this.prependOnConcat
+          ? overlayArray.concat(baseArray)
+          : baseArray.concat(overlayArray);
       case 'replace':
         return overlayArray;
       case 'unique': {
