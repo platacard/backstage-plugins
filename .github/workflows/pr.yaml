@@ -48,7 +48,7 @@ jobs:
         run: yarn prettier:check
 
       - name: build
-        run: yarn build:all
+        run: yarn build
 
       - name: test
         run: yarn test:all --maxWorkers=3
