@@ -37,7 +37,7 @@ jobs:
         id: release_check
         run: node scripts/check-if-release.js
         env:
-          COMMIT_SHA_BEFORE: "${{ github.event.before }}"
+          COMMIT_SHA_BEFORE: '${{ github.event.before }}'
 
       - name: build type declarations
         run: yarn tsc
@@ -60,7 +60,7 @@ jobs:
         node-version: [22]
 
     env:
-      CI: "true"
+      CI: 'true'
       NODE_OPTIONS: --max-old-space-size=4096
 
     steps:
