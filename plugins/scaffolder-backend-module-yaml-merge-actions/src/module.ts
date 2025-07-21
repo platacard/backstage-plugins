@@ -8,14 +8,14 @@ import { createYamlMergeAction } from './yaml-merge-action';
  */
 export const YamlMerge = createBackendModule({
   pluginId: 'scaffolder',
-  moduleId: 'yaml-merge',
-  register({ registerInit }) {
-    registerInit({
+  moduleId: 'yaml-merge-actions',
+  register(env) {
+    env.registerInit({
       deps: {
-        scaffolder: scaffolderActionsExtensionPoint,
+        scaffolderActions: scaffolderActionsExtensionPoint,
       },
-      async init({ scaffolder }) {
-        scaffolder.addActions(createYamlMergeAction());
+      async init({ scaffolderActions }) {
+        scaffolderActions.addActions(createYamlMergeAction());
       },
     });
   },
