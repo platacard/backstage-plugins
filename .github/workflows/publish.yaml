@@ -91,10 +91,7 @@ jobs:
           yarn workspaces foreach -W -v \
                --no-private npm publish \
                --access public \
-               --provenance \
                --tolerate-republish \
-               --exclude app \
-               --exclude backend
 
       # Creates the next available tag with format "release-<year>-<month>-<day>[.<n>]"
       - name: Create a release tag
