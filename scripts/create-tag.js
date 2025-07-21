@@ -1,5 +1,8 @@
+#!/usr/bin/env node
+
+/* eslint-disable import/no-extraneous-dependencies */
 /*
- * Copyright 2024 The Backstage Authors
+ * Copyright 2020 The Backstage Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,87 +17,62 @@
  * limitations under the License.
  */
 
-import { Octokit } from '@octokit/rest';
-import { resolve as resolvePath } from 'path';
-import fs from 'fs-extra';
-import * as url from 'url';
-
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const { Octokit } = require('@octokit/rest');
 
 const baseOptions = {
-  owner: 'backstage',
-  repo: 'community-plugins',
+  owner: 'Platacard',
+  repo: 'backstage-plugins',
 };
 
-async function getPackageJson(filePath) {
-  return await fs.readJson(resolvePath(filePath, 'package.json'));
-}
+async function main() {
+  const { GITHUB_SHA, GITHUB_TOKEN } = process.env;
+  if (!GITHUB_SHA) {
+    throw new Error('GITHUB_SHA is not set');
+  }
+  if (!GITHUB_TOKEN) {
+    throw new Error('GITHUB_TOKEN is not set');
+  }
 
-async function createGitTag(octokit, commitSha, tagName) {
+  const octokit = new Octokit({ auth: GITHUB_TOKEN });
+
+  const date = new Date();
+  const yyyy = date.getUTCFullYear();
+  const mm = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const dd = String(date.getUTCDate()).padStart(2, '0');
+  const baseTagName = `release-${yyyy}-${mm}-${dd}`;
+
+  console.log('Requesting existing tags');
+
+  const existingTags = await octokit.repos.listTags({
+    ...baseOptions,
+    per_page: 100,
+  });
+  const existingTagNames = existingTags.data.map(obj => obj.name);
+
+  let tagName = baseTagName;
+  let index = 0;
+  while (existingTagNames.includes(tagName)) {
+    index += 1;
+    tagName = `${baseTagName}.${index}`;
+  }
+
+  console.log(`Creating release tag ${tagName}`);
+
   const annotatedTag = await octokit.git.createTag({
     ...baseOptions,
     tag: tagName,
     message: tagName,
-    object: commitSha,
+    object: GITHUB_SHA,
     type: 'commit',
   });
 
-  try {
-    await octokit.git.createRef({
-      ...baseOptions,
-      ref: `refs/tags/${tagName}`,
-      sha: annotatedTag.data.sha,
-    });
-  } catch (ex) {
-    if (
-      ex.status === 422 &&
-      ex.response.data.message === 'Reference already exists'
-    ) {
-      throw new Error(`Tag ${tagName} already exists in repository`);
-    }
-    console.error(`Tag creation for ${tagName} failed`);
-    throw ex;
-  }
-}
-
-async function main() {
-  if (!process.env.WORKSPACE_NAME) {
-    throw new Error('WORKSPACE_NAME environment variable not set');
-  }
-  if (!process.env.GITHUB_SHA) {
-    throw new Error('GITHUB_SHA is not set');
-  }
-  if (!process.env.GITHUB_TOKEN) {
-    throw new Error('GITHUB_TOKEN is not set');
-  }
-
-  const commitSha = process.env.GITHUB_SHA;
-  const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
-
-  const repoRoot = resolvePath(__dirname, '..', '..');
-  process.chdir(
-    resolvePath(repoRoot, 'workspaces', process.env.WORKSPACE_NAME),
-  );
-
-  const dirContents = await fs.readdir('./plugins', {
-    withFileTypes: true,
+  await octokit.git.createRef({
+    ...baseOptions,
+    ref: `refs/tags/${tagName}`,
+    sha: annotatedTag.data.sha,
   });
 
-  for (const item of dirContents) {
-    if (item.isDirectory()) {
-      try {
-        const { name, version } = await getPackageJson(
-          resolvePath('./plugins', item.name),
-        );
-        const tagName = `${name}@${version}`;
-
-        console.log(`Creating release tag ${tagName} at ${commitSha}`);
-        await createGitTag(octokit, commitSha, tagName);
-      } catch (error) {
-        console.error(`Failed to create tag for ${item.name}:${error.message}`);
-      }
-    }
-  }
+  console.log(`::set-output name=tag_name::${tagName}`);
 }
 
 main().catch(error => {
