@@ -1,0 +1,110 @@
+name: Publish Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    outputs:
+      needs_release: ${{ steps.release_check.outputs.needs_release }}
+
+    strategy:
+      matrix:
+        node-version: [22]
+
+    env:
+      CI: true
+      NODE_OPTIONS: --max-old-space-size=4096
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn install --frozen-lockfile
+
+      - name: Fetch previous commit for release check
+        run: git fetch origin '${{ github.event.before }}'
+
+      - name: Check if release
+        id: release_check
+        run: node scripts/check-if-release.js
+        env:
+          COMMIT_SHA_BEFORE: "${{ github.event.before }}"
+
+      - name: build type declarations
+        run: yarn tsc
+
+      - name: build packages
+        run: yarn build
+
+  # A separate release build that is only run for commits that are the result of merging the "Version Packages" PR
+  # We can't re-use the output from the above step, but we'll have a guaranteed node_modules cache and
+  # only run the build steps that are necessary for publishing
+  release:
+    needs: build
+
+    if: needs.build.outputs.needs_release == 'true'
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22]
+
+    env:
+      CI: "true"
+      NODE_OPTIONS: --max-old-space-size=4096
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          always-auth: true
+          node-version: ${{ matrix.node-version }}
+          registry-url: https://registry.npmjs.org
+
+      - run: yarn install --frozen-lockfile
+
+      - name: build type declarations
+        run: yarn tsc
+
+      - name: build packages
+        run: yarn backstage-cli repo build
+
+      # Publishes current version of packages that are not already present in the registry.
+      - name: Run publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        run: |
+          yarn config set -H 'npmAuthToken' "${{secrets.NPM_TOKEN}}"
+          yarn workspaces foreach -W -v \
+               --no-private npm publish \
+               --access public \
+               --provenance \
+               --tolerate-republish \
+               --exclude app \
+               --exclude backend
+
+      # Creates the next available tag with format "release-<year>-<month>-<day>[.<n>]"
+      - name: Create a release tag
+        id: create_tag
+        run: node scripts/create-tag.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Convert the newly created tag into a release with changelog information
+      - name: Create release on GitHub
+        run: node scripts/create-github-release.js ${{ steps.create_tag.outputs.tag_name }} 1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
