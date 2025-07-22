@@ -8879,6 +8879,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@platacard/backstage-plugin-scaffolder-backend-module-yaml-merge-actions@workspace:plugins/scaffolder-backend-module-yaml-merge-actions":
+  version: 0.0.0-use.local
+  resolution: "@platacard/backstage-plugin-scaffolder-backend-module-yaml-merge-actions@workspace:plugins/scaffolder-backend-module-yaml-merge-actions"
+  dependencies:
+    "@backstage/backend-common": "npm:^0.25.0"
+    "@backstage/backend-plugin-api": "npm:^1.4.0"
+    "@backstage/backend-test-utils": "npm:^1.6.0"
+    "@backstage/cli": "npm:^0.33.0"
+    "@backstage/plugin-scaffolder-node": "npm:^0.9.0"
+    "@types/fs-extra": "npm:^11.0.4"
+    fs-extra: "npm:^11.2.0"
+    yaml: "npm:^2.5.1"
+  languageName: unknown
+  linkType: soft
+
 "@playwright/test@npm:^1.32.3":
   version: 1.53.1
   resolution: "@playwright/test@npm:1.53.1"
@@ -13906,6 +13921,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/fs-extra@npm:^11.0.4":
+  version: 11.0.4
+  resolution: "@types/fs-extra@npm:11.0.4"
+  dependencies:
+    "@types/jsonfile": "npm:*"
+    "@types/node": "npm:*"
+  checksum: 10c0/9e34f9b24ea464f3c0b18c3f8a82aefc36dc524cc720fc2b886e5465abc66486ff4e439ea3fb2c0acebf91f6d3f74e514f9983b1f02d4243706bdbb7511796ad
+  languageName: node
+  linkType: hard
+
 "@types/graceful-fs@npm:^4.1.3":
   version: 4.1.9
   resolution: "@types/graceful-fs@npm:4.1.9"
@@ -14037,6 +14062,15 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: 10c0/6bf5337bc447b706bb5b4431d37686aa2ea6d07cfd6f79cc31de80170d6ff9b1c7384a9c0ccbc45b3f512bae9e9f75c2e12109806a15331dc94e8a8db6dbb4ac
+  languageName: node
+  linkType: hard
+
+"@types/jsonfile@npm:*":
+  version: 6.1.4
+  resolution: "@types/jsonfile@npm:6.1.4"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10c0/b12d068b021e4078f6ac4441353965769be87acf15326173e2aea9f3bf8ead41bd0ad29421df5bbeb0123ec3fc02eb0a734481d52903704a1454a1845896b9eb
   languageName: node
   linkType: hard
 
@@ -34299,7 +34333,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.0.0, yaml@npm:^2.2.1, yaml@npm:^2.2.2":
+"yaml@npm:^2.0.0, yaml@npm:^2.2.1, yaml@npm:^2.2.2, yaml@npm:^2.5.1":
   version: 2.8.0
   resolution: "yaml@npm:2.8.0"
   bin:
