@@ -1,0 +1,40 @@
+name: Version Packages
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: use Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: 'yarn'
+          node-version: 22.x
+          registry-url: https://registry.npmjs.org/
+          scope: '@platacard'
+
+      - name: install dependencies
+        run: yarn install --immutable
+
+      - name: configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: create release pull request
+        id: changesets
+        uses: changesets/action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
