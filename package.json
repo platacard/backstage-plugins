@@ -30,8 +30,8 @@
     ]
   },
   "devDependencies": {
-    "@backstage/cli": "^0.33.0",
-    "@backstage/e2e-test-utils": "^0.1.1",
+    "@backstage/cli": "backstage:^",
+    "@backstage/e2e-test-utils": "backstage:^",
     "@changesets/cli": "^2.29.5",
     "@playwright/test": "^1.32.3",
     "node-gyp": "^10.0.0",
