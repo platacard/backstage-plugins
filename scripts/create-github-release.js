@@ -27,11 +27,10 @@ if (!BOOL_CREATE_RELEASE) {
   );
 }
 
-const GH_OWNER = 'RoadieHQ';
-const GH_REPO = 'roadie-backstage-plugins';
+const GH_OWNER = 'Platacard';
+const GH_REPO = 'backstage-plugins';
 const EXPECTED_COMMIT_MESSAGE = /^Merge pull request #(?<prNumber>[0-9]+) from/;
-const CHANGESET_RELEASE_BRANCH =
-  'roadie-backstage-plugins/changeset-release/main';
+const CHANGESET_RELEASE_BRANCH = 'backstage-plugins/changeset-release/main';
 
 // Initialize a GitHub client
 const { GITHUB_TOKEN } = process.env;
