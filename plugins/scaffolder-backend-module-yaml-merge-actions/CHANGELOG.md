@@ -1,5 +1,11 @@
 # @platacard/backstage-plugin-scaffolder-backend-module-yaml-merge-actions
 
+## 0.5.0
+
+### Minor Changes
+
+- 94bf33b: Upgrade Backsrtage to 1.41.1 version
+
 ## 0.4.0
 
 ### Minor Changes
