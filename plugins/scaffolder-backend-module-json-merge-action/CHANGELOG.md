@@ -1,5 +1,11 @@
 # @platacard/backstage-plugin-scaffolder-backend-module-json-merge-action
 
+## 0.7.0
+
+### Minor Changes
+
+- c03c91c: Add README
+
 ## 0.6.0
 
 ### Minor Changes
