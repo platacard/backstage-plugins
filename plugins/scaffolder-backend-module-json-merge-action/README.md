@@ -27,7 +27,7 @@ yarn add --cwd packages/backend @platacard/backstage-plugin-scaffolder-backend-m
 Add the module to your backend in `packages/backend/src/index.ts`:
 
 ```typescript
-import { createBackend } from "@backstage/backend-defaults";
+import { createBackend } from '@backstage/backend-defaults';
 
 const backend = createBackend();
 
@@ -35,7 +35,7 @@ const backend = createBackend();
 
 backend.add(
   import(
-    "@platacard/backstage-plugin-scaffolder-backend-module-json-merge-action"
+    '@platacard/backstage-plugin-scaffolder-backend-module-json-merge-action'
   ),
 );
 
