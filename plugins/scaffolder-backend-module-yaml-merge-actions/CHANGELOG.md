@@ -1,5 +1,11 @@
 # @platacard/backstage-plugin-scaffolder-backend-module-yaml-merge-actions
 
+## 0.6.0
+
+### Minor Changes
+
+- c03c91c: Add README
+
 ## 0.5.0
 
 ### Minor Changes
