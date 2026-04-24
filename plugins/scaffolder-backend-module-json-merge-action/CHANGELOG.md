@@ -1,5 +1,14 @@
 # @platacard/backstage-plugin-scaffolder-backend-module-json-merge-action
 
+## 0.7.1
+
+### Patch Changes
+
+- d73d36a: Upgrade Backstage to 1.50.3. Migrated the `scaffolderActionsExtensionPoint`
+  import from `@backstage/plugin-scaffolder-node/alpha` to
+  `@backstage/plugin-scaffolder-node` now that it is stable. No behavior or API
+  changes for adopters.
+
 ## 0.7.0
 
 ### Minor Changes
