@@ -10,8 +10,8 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - 20
           - 22
+          - 24
     env:
       CI: true
       NODE_OPTIONS: --max-old-space-size=4096
