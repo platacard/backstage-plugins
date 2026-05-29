@@ -52,7 +52,7 @@ async function runPlain(cmd, ...args) {
 }
 
 async function main() {
-  process.cwd(resolvePath(__dirname, '..'));
+  process.chdir(resolvePath(__dirname, '..'));
 
   if (!process.env.GITHUB_OUTPUT) {
     throw new Error('GITHUB_OUTPUT environment variable not set');
@@ -99,11 +99,13 @@ async function main() {
     }),
   );
 
+  // A release is needed when a package's version changed and the package still
+  // exists. We deliberately allow oldVersion === '<none>' so a brand-new,
+  // first-time-versioned package also triggers a release; only the deleted case
+  // (newVersion === '<none>') is excluded.
   const newVersions = packageVersions.filter(
     ({ oldVersion, newVersion }) =>
-      oldVersion !== newVersion &&
-      oldVersion !== '<none>' &&
-      newVersion !== '<none>',
+      oldVersion !== newVersion && newVersion !== '<none>',
   );
 
   if (newVersions.length === 0) {

@@ -29,8 +29,17 @@ if (!BOOL_CREATE_RELEASE) {
 
 const GH_OWNER = 'Platacard';
 const GH_REPO = 'backstage-plugins';
-const EXPECTED_COMMIT_MESSAGE = /^Merge pull request #(?<prNumber>[0-9]+) from/;
-const CHANGESET_RELEASE_BRANCH = 'backstage-plugins/changeset-release/main';
+// Extract the PR number from either a merge commit
+// ("Merge pull request #123 from ...") or a squash/rebase commit
+// ("Some title (#123)"), so release notes work regardless of merge strategy.
+const PR_NUMBER_PATTERNS = [
+  /^Merge pull request #(?<prNumber>[0-9]+) from/,
+  /\(#(?<prNumber>[0-9]+)\)/,
+];
+// changesets/action opens its PR from the `changeset-release/<baseBranch>`
+// branch. We detect changeset releases via the PR head ref (robust to
+// merge/squash/rebase) to strip the boilerplate header changesets prepends.
+const CHANGESET_RELEASE_BRANCH = 'changeset-release/main';
 
 // Initialize a GitHub client
 const { GITHUB_TOKEN } = process.env;
@@ -88,31 +97,38 @@ async function getCommitMessageUsingTagName(tagName) {
   return commitData.data.message;
 }
 
-// There is a PR number in our expected commit message. Get the description of that PR.
+// Resolve the PR behind the tagged commit and derive the release description
+// from its body.
 async function getReleaseDescriptionFromCommitMessage(commitMessage) {
-  // It should exactly match the pattern of changeset commit message, or else will abort.
-  const expectedMessage = RegExp(EXPECTED_COMMIT_MESSAGE);
-  if (!expectedMessage.test(commitMessage)) {
+  let prNumber;
+  for (const pattern of PR_NUMBER_PATTERNS) {
+    const match = commitMessage.match(pattern);
+    if (match) {
+      prNumber = match.groups.prNumber;
+      break;
+    }
+  }
+  if (!prNumber) {
     throw new Error(
-      `Expected regex did not match commit message: ${commitMessage}`,
+      `Could not find a PR number in commit message: ${commitMessage}`,
     );
   }
 
-  // Get the PR description from the commit message
-  const prNumber = commitMessage.match(expectedMessage).groups.prNumber;
   const { data } = await octokit.pulls.get({
     owner: GH_OWNER,
     repo: GH_REPO,
     pull_number: prNumber,
   });
 
-  // Use the PR description to prepare for the release description
-  const isChangesetRelease = commitMessage.includes(CHANGESET_RELEASE_BRANCH);
+  // changesets prepends a boilerplate header to the Version Packages PR body;
+  // strip it for changeset releases (detected via the PR's source branch).
+  const body = data.body ?? '';
+  const isChangesetRelease = data.head.ref === CHANGESET_RELEASE_BRANCH;
   if (isChangesetRelease) {
-    return data.body.split('\n').slice(3).join('\n');
+    return body.split('\n').slice(3).join('\n');
   }
 
-  return data.body;
+  return body;
 }
 
 // Create Release on GitHub.

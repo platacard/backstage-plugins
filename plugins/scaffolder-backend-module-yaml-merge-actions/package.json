@@ -5,6 +5,11 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/platacard/backstage-plugins",
+    "directory": "plugins/scaffolder-backend-module-yaml-merge-actions"
+  },
   "publishConfig": {
     "access": "public",
     "main": "dist/index.cjs.js",
