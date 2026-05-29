@@ -1,0 +1,49 @@
+version: 2
+
+updates:
+  # Keep SHA-pinned GitHub Actions current. Dependabot bumps the SHA and
+  # rewrites the trailing `# vX.Y.Z` comment, preserving the pinning convention
+  # used across .github/workflows/*.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'ci'
+    groups:
+      github-actions:
+        patterns:
+          - '*'
+
+  # Non-Backstage npm dependencies across the Yarn 4 workspaces. The @backstage*
+  # packages are intentionally excluded: they use the `backstage:^` protocol and
+  # are version-locked to backstage.json + the backstage yarn plugin, so they
+  # must move together via the Backstage version bump workflow, never one at a
+  # time through Dependabot.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    versioning-strategy: increase
+    commit-message:
+      prefix: 'chore(deps)'
+      prefix-development: 'chore(dev-deps)'
+    ignore:
+      - dependency-name: '@backstage/*'
+      - dependency-name: '@backstage-community/*'
+    groups:
+      # Collapse low-risk updates into two PRs (prod / dev) to cut review noise.
+      production-minor-patch:
+        dependency-type: production
+        update-types:
+          - minor
+          - patch
+      development-minor-patch:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
