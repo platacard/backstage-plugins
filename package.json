@@ -33,6 +33,7 @@
     "@backstage/cli": "backstage:^",
     "@backstage/cli-defaults": "backstage:^",
     "@backstage/e2e-test-utils": "backstage:^",
+    "@changesets/changelog-github": "^0.7.0",
     "@changesets/cli": "^2.29.5",
     "@jest/environment-jsdom-abstract": "^30.0.0",
     "@octokit/rest": "^19.0.3",
