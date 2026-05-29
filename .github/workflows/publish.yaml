@@ -6,8 +6,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: write
-  packages: write
+  contents: read
 
 # Serialize publish runs (do NOT cancel a publish mid-upload) so concurrent runs
 # cannot race tag creation in scripts/create-tag.js.
@@ -63,6 +62,10 @@ jobs:
 
     if: needs.build.outputs.needs_release == 'true'
 
+    permissions:
+      contents: write # create the git tag + GitHub release
+      id-token: write # npm provenance attestation (Sigstore via OIDC)
+
     runs-on: ubuntu-latest
 
     strategy:
@@ -103,6 +106,7 @@ jobs:
           yarn workspaces foreach -W -v \
                --no-private npm publish \
                --access public \
+               --provenance \
                --tolerate-republish
 
       # Creates the next available tag with format "release-<year>-<month>-<day>[.<n>]"
