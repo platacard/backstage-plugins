@@ -30,7 +30,10 @@ if (!BOOL_CREATE_RELEASE) {
 const GH_OWNER = 'Platacard';
 const GH_REPO = 'backstage-plugins';
 const EXPECTED_COMMIT_MESSAGE = /^Merge pull request #(?<prNumber>[0-9]+) from/;
-const CHANGESET_RELEASE_BRANCH = 'backstage-plugins/changeset-release/main';
+// changesets/action opens the PR from `changeset-release/<baseBranch>`, which
+// GitHub records in the merge commit as `<owner>/changeset-release/main`. Match
+// on the branch suffix so this works regardless of the owner/repo prefix.
+const CHANGESET_RELEASE_BRANCH = 'changeset-release/main';
 
 // Initialize a GitHub client
 const { GITHUB_TOKEN } = process.env;

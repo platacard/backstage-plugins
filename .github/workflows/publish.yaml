@@ -9,6 +9,12 @@ permissions:
   contents: write
   packages: write
 
+# Serialize publish runs (do NOT cancel a publish mid-upload) so concurrent runs
+# cannot race tag creation in scripts/create-tag.js.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,14 +33,20 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6.0.2
+        with:
+          # check-if-release.js diffs HEAD against its parent commit; without full
+          # history HEAD^ is missing on the default shallow checkout (e.g. on
+          # workflow_dispatch, where github.event.before is empty).
+          fetch-depth: 0
 
       - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6.4.0
         with:
           node-version: ${{ matrix.node-version }}
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --immutable
 
       - name: Fetch previous commit for release check
+        if: github.event.before != '' && github.event.before != '0000000000000000000000000000000000000000'
         run: git fetch origin '${{ github.event.before }}'
 
       - name: Check if release
@@ -78,7 +90,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           registry-url: https://registry.npmjs.org
 
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --immutable
 
       - name: build type declarations
         run: yarn tsc
@@ -88,14 +100,16 @@ jobs:
 
       # Publishes current version of packages that are not already present in the registry.
       - name: Run publish
+        # Yarn Berry reads the npm token from YARN_NPM_AUTH_TOKEN; passing it via
+        # env (not interpolated into the run body / persisted to ~/.yarnrc.yml)
+        # keeps it out of the rendered command line and process args.
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          yarn config set -H 'npmAuthToken' "${{secrets.NPM_TOKEN}}"
           yarn workspaces foreach -W -v \
                --no-private npm publish \
                --access public \
-               --tolerate-republish \
+               --tolerate-republish
 
       # Creates the next available tag with format "release-<year>-<month>-<day>[.<n>]"
       - name: Create a release tag

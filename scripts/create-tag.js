@@ -18,6 +18,7 @@
  */
 
 const { Octokit } = require('@octokit/rest');
+const { appendFileSync } = require('fs');
 
 const baseOptions = {
   owner: 'Platacard',
@@ -72,7 +73,10 @@ async function main() {
     sha: annotatedTag.data.sha,
   });
 
-  console.log(`::set-output name=tag_name::${tagName}`);
+  if (!process.env.GITHUB_OUTPUT) {
+    throw new Error('GITHUB_OUTPUT environment variable not set');
+  }
+  appendFileSync(process.env.GITHUB_OUTPUT, `tag_name=${tagName}\n`);
 }
 
 main().catch(error => {

@@ -29498,6 +29498,7 @@ __metadata:
     "@backstage/e2e-test-utils": "backstage:^"
     "@changesets/cli": "npm:^2.29.5"
     "@jest/environment-jsdom-abstract": "npm:^30.0.0"
+    "@octokit/rest": "npm:^19.0.3"
     "@playwright/test": "npm:^1.32.3"
     "@types/jest": "npm:^30.0.0"
     jest: "npm:^30.0.0"
