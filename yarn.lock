@@ -8632,7 +8632,7 @@ __metadata:
     "@backstage/backend-test-utils": "backstage:^"
     "@backstage/cli": "backstage:^"
     "@backstage/plugin-scaffolder-node": "backstage:^"
-    json-merger: "npm:^1.1.10"
+    json-merger: "npm:^3.0.0"
   languageName: unknown
   linkType: soft
 
@@ -14044,7 +14044,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn-walk@npm:^8.1.1, acorn-walk@npm:^8.2.0":
+"acorn-walk@npm:^8.1.1":
   version: 8.3.4
   resolution: "acorn-walk@npm:8.3.4"
   dependencies:
@@ -14062,7 +14062,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.11.0, acorn@npm:^8.14.0, acorn@npm:^8.4.1, acorn@npm:^8.7.0, acorn@npm:^8.9.0":
+"acorn@npm:^8.11.0, acorn@npm:^8.14.0, acorn@npm:^8.4.1, acorn@npm:^8.9.0":
   version: 8.15.0
   resolution: "acorn@npm:8.15.0"
   bin:
@@ -16394,6 +16394,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:^13.1.0":
+  version: 13.1.0
+  resolution: "commander@npm:13.1.0"
+  checksum: 10c0/7b8c5544bba704fbe84b7cab2e043df8586d5c114a4c5b607f83ae5060708940ed0b5bd5838cf8ce27539cde265c1cbd59ce3c8c6b017ed3eec8943e3a415164
+  languageName: node
+  linkType: hard
+
 "commander@npm:^14.0.3":
   version: 14.0.3
   resolution: "commander@npm:14.0.3"
@@ -16433,13 +16440,6 @@ __metadata:
   version: 8.3.0
   resolution: "commander@npm:8.3.0"
   checksum: 10c0/8b043bb8322ea1c39664a1598a95e0495bfe4ca2fad0d84a92d7d1d8d213e2a155b441d2470c8e08de7c4a28cf2bc6e169211c49e1b21d9f7edc6ae4d9356060
-  languageName: node
-  linkType: hard
-
-"commander@npm:^9.1.0":
-  version: 9.5.0
-  resolution: "commander@npm:9.5.0"
-  checksum: 10c0/5f7784fbda2aaec39e89eb46f06a999e00224b3763dc65976e05929ec486e174fe9aac2655f03ba6a5e83875bd173be5283dc19309b7c65954701c02025b3c1d
   languageName: node
   linkType: hard
 
@@ -19988,7 +19988,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:^10.0.0, fs-extra@npm:^10.0.1":
+"fs-extra@npm:^10.0.0":
   version: 10.1.0
   resolution: "fs-extra@npm:10.1.0"
   dependencies:
@@ -20010,7 +20010,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:^11.3.5":
+"fs-extra@npm:^11.3.0, fs-extra@npm:^11.3.5":
   version: 11.3.5
   resolution: "fs-extra@npm:11.3.5"
   dependencies:
@@ -23289,20 +23289,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-merger@npm:^1.1.10":
-  version: 1.1.10
-  resolution: "json-merger@npm:1.1.10"
+"json-merger@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "json-merger@npm:3.0.0"
   dependencies:
-    commander: "npm:^9.1.0"
-    fs-extra: "npm:^10.0.1"
+    commander: "npm:^13.1.0"
+    fs-extra: "npm:^11.3.0"
     js-yaml: "npm:^4.1.0"
     json-ptr: "npm:^3.1.1"
     jsonpath: "npm:^1.1.1"
     lodash.range: "npm:^3.2.0"
-    vm2: "npm:^3.9.17"
   bin:
     json-merger: bin/json-merger.js
-  checksum: 10c0/9cb021506ac79beb7ea3a250fa3e92368d6b1005e8ca8d51b4f8db33dc603c081128baa4bb9e336fe448e92f39362861ea397de81cf8f59e2bd5b920f968a291
+  checksum: 10c0/b1c5e16e9ccfcf37dc4e144d9881b46759e3905eb246c9ca4dbc0656232d8f5f414845c201d276b3ffe8f595c9e76194b451da3396103c6a4adfe7f58bddbe72
   languageName: node
   linkType: hard
 
@@ -33504,18 +33503,6 @@ __metadata:
   bin:
     vm2: bin/vm2
   checksum: 10c0/10fe8e72ab778c4e836b254d5995e5135a7fa93815876500dfc6242bce5223d3d8f0dd0138d1392b683190f7ed053b7707d608688fd30f04d0b0e97de1fc0630
-  languageName: node
-  linkType: hard
-
-"vm2@npm:^3.9.17":
-  version: 3.9.19
-  resolution: "vm2@npm:3.9.19"
-  dependencies:
-    acorn: "npm:^8.7.0"
-    acorn-walk: "npm:^8.2.0"
-  bin:
-    vm2: bin/vm2
-  checksum: 10c0/16e8e6bb389ae88b8ffbc439e8d7c09db3b98f7f738440af5b78080d6cb35db66b41b0ad055cc59bcc45cb8e270ed850667207348e90760b430403741f72337a
   languageName: node
   linkType: hard
 
