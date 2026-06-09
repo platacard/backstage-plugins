@@ -32,7 +32,7 @@
   "dependencies": {
     "@backstage/backend-plugin-api": "backstage:^",
     "@backstage/plugin-scaffolder-node": "backstage:^",
-    "json-merger": "^1.1.10"
+    "json-merger": "^3.0.0"
   },
   "devDependencies": {
     "@backstage/backend-test-utils": "backstage:^",
