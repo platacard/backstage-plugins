@@ -162,9 +162,8 @@ async function createRelease(releaseDescription) {
 
 async function main() {
   const commitMessage = await getCommitMessageUsingTagName(TAG_NAME);
-  const releaseDescription = await getReleaseDescriptionFromCommitMessage(
-    commitMessage,
-  );
+  const releaseDescription =
+    await getReleaseDescriptionFromCommitMessage(commitMessage);
 
   await createRelease(releaseDescription);
 }
