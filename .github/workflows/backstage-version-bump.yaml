@@ -60,10 +60,24 @@ jobs:
         # crafted workflow_dispatch value cannot inject shell commands.
         env:
           RELEASE_LINE: ${{ github.event.inputs.release || 'main' }}
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
         run: yarn backstage-cli versions:bump --release "$RELEASE_LINE"
+
+      - name: Deduplicate dependencies
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
+        run: yarn dedupe
 
       - name: Generate changeset
         run: node scripts/create-version-bump-changeset.js
+
+      # The bump rewrites package.json files and adds a changeset; rerun the
+      # repo fixers and prettier so the PR passes `yarn fix --check` and
+      # `yarn prettier:check` in CI.
+      - name: Apply repo fixes and formatting
+        run: |
+          yarn fix
+          yarn prettier:fix
 
       - name: Detect changes
         id: diff
