@@ -18,24 +18,31 @@
  */
 
 /*
- * Writes a changeset for every PUBLIC workspace package whose package.json was
- * modified by `backstage-cli versions:bump`. Releases in this repo are driven
- * entirely by changesets, so without this a Backstage bump would update the
- * dependency ranges but never publish the resulting plugin versions.
+ * Writes a changeset covering every PUBLIC workspace package after
+ * `backstage-cli versions:bump`. Releases in this repo are driven entirely by
+ * changesets, so without this a Backstage bump would update the dependency
+ * versions but never publish the resulting plugin versions.
+ *
+ * Package manifests here use the Backstage yarn plugin's `backstage:^` ranges,
+ * so a bump never touches the packages' package.json files — only
+ * backstage.json and yarn.lock. We therefore can't diff package.json files to
+ * find affected packages (they never change); instead, like
+ * backstage/community-plugins, the changeset lists ALL public workspace
+ * packages whenever backstage.json was bumped.
  *
  * Invoked by .github/workflows/backstage-version-bump.yaml after the bump runs.
- * Exits 0 writing nothing when no public package changed (changeset-less commit,
- * which the release pipeline correctly ignores).
+ * Exits 0 writing nothing when backstage.json is unchanged (already on the
+ * latest release).
  */
 
 const { execFileSync } = require('child_process');
-const { readFileSync, writeFileSync } = require('fs');
+const { readFileSync, readdirSync, writeFileSync, existsSync } = require('fs');
 const { join } = require('path');
 
 // Glob roots that hold workspace packages, mirroring package.json "workspaces".
 const WORKSPACE_DIRS = ['packages', 'plugins'];
 
-function changedPackageJsonPaths() {
+function bumpChangedBackstageVersion() {
   // Compare the working tree (post-bump, pre-commit) against HEAD.
   const out = execFileSync('git', ['diff', '--name-only', 'HEAD'], {
     encoding: 'utf8',
@@ -43,28 +50,40 @@ function changedPackageJsonPaths() {
   return out
     .split('\n')
     .map(line => line.trim())
-    .filter(
-      path =>
-        path.endsWith('/package.json') &&
-        WORKSPACE_DIRS.some(dir => path.startsWith(`${dir}/`)),
-    );
+    .includes('backstage.json');
 }
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8'));
 }
 
-function main() {
-  const changed = changedPackageJsonPaths();
+function publicWorkspacePackageNames() {
+  const names = [];
+  for (const dir of WORKSPACE_DIRS) {
+    for (const entry of readdirSync(join(process.cwd(), dir))) {
+      const manifest = join(process.cwd(), dir, entry, 'package.json');
+      if (!existsSync(manifest)) {
+        continue;
+      }
+      const pkg = readJson(manifest);
+      if (pkg.private !== true && pkg.name) {
+        names.push(pkg.name);
+      }
+    }
+  }
+  return names.sort();
+}
 
-  const publicNames = changed
-    .map(path => readJson(join(process.cwd(), path)))
-    .filter(pkg => pkg.private !== true && pkg.name)
-    .map(pkg => pkg.name)
-    .sort();
+function main() {
+  if (!bumpChangedBackstageVersion()) {
+    console.log('backstage.json is unchanged; skipping changeset.');
+    return;
+  }
+
+  const publicNames = publicWorkspacePackageNames();
 
   if (publicNames.length === 0) {
-    console.log('No public packages changed by the bump; skipping changeset.');
+    console.log('No public workspace packages found; skipping changeset.');
     return;
   }
 
