@@ -38,9 +38,7 @@ const backend = createBackend();
 // ... other modules
 
 backend.add(
-  import(
-    '@platacard/backstage-plugin-scaffolder-backend-module-yaml-merge-actions'
-  ),
+  import('@platacard/backstage-plugin-scaffolder-backend-module-yaml-merge-actions'),
 );
 
 backend.start();
