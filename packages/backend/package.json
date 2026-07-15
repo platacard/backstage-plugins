@@ -41,9 +41,9 @@
     "@backstage/plugin-search-backend-node": "backstage:^",
     "@backstage/plugin-techdocs-backend": "backstage:^",
     "app": "link:../app",
-    "better-sqlite3": "^12.10.0",
+    "better-sqlite3": "^12.11.1",
     "node-gyp": "^12.4.0",
-    "pg": "^8.21.0"
+    "pg": "^8.22.0"
   },
   "devDependencies": {
     "@backstage/cli": "backstage:^"
