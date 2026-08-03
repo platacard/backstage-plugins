@@ -8630,7 +8630,7 @@ __metadata:
     "@backstage/cli": "backstage:^"
     "@backstage/plugin-scaffolder-node": "backstage:^"
     "@types/fs-extra": "npm:^11.0.4"
-    fs-extra: "npm:^11.3.6"
+    fs-extra: "npm:^11.4.0"
     yaml: "npm:^2.9.0"
   languageName: unknown
   linkType: soft
@@ -14397,7 +14397,7 @@ __metadata:
     react: "npm:^18.0.2"
     react-dom: "npm:^18.0.2"
     react-router: "npm:^7.17.0"
-    react-router-dom: "npm:^7.18.1"
+    react-router-dom: "npm:^7.18.2"
   languageName: unknown
   linkType: soft
 
@@ -14995,7 +14995,7 @@ __metadata:
     "@backstage/plugin-search-backend-node": "backstage:^"
     "@backstage/plugin-techdocs-backend": "backstage:^"
     app: "link:../app"
-    better-sqlite3: "npm:^13.0.1"
+    better-sqlite3: "npm:^13.0.2"
     node-gyp: "npm:^12.4.0"
     pg: "npm:^8.22.0"
   languageName: unknown
@@ -15172,13 +15172,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"better-sqlite3@npm:^13.0.1":
-  version: 13.0.1
-  resolution: "better-sqlite3@npm:13.0.1"
+"better-sqlite3@npm:^13.0.2":
+  version: 13.0.2
+  resolution: "better-sqlite3@npm:13.0.2"
   dependencies:
     node-addon-api: "npm:^8.0.0"
     node-gyp: "npm:latest"
-  checksum: 10c0/dab0d720e7b215490d68733c657de75f6fcffe1ce61d737ace9d2f195d02e90be9f19ced28f407247237aad7a5a371e044e601df9caa9d5617cff6a7a756ede5
+  checksum: 10c0/c0519e589bdcac15d82c9c10df8cc149d18141c75fdabd6f230de71221d1791353f9611e4d31fc63a8b57a274b1b5cd5a8b3ac66eb1e8965ea6ca4c743b98d59
   languageName: node
   linkType: hard
 
@@ -19972,14 +19972,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:^11.3.6":
-  version: 11.3.6
-  resolution: "fs-extra@npm:11.3.6"
+"fs-extra@npm:^11.4.0":
+  version: 11.4.0
+  resolution: "fs-extra@npm:11.4.0"
   dependencies:
     graceful-fs: "npm:^4.2.0"
     jsonfile: "npm:^6.0.1"
     universalify: "npm:^2.0.0"
-  checksum: 10c0/191c96bf71519fe08595f7920b6e568f6e44b48ed968624f35cb3bb7f4f9b05718b99cd6bf81938c0f7b1daa6d151383c33e0cbfdfe4d95419d7ea121de8e91a
+  checksum: 10c0/1e311eca820a12d3d795f2043dcd5628d017f4d21e634f3f9ef314ae68bee9979758262fb9cb35ffa6f26454c3fffe8b15558733e91e8fc729b07b10bb98d8b6
   languageName: node
   linkType: hard
 
@@ -28907,21 +28907,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^7.18.1":
-  version: 7.18.1
-  resolution: "react-router-dom@npm:7.18.1"
+"react-router-dom@npm:^7.18.2":
+  version: 7.18.2
+  resolution: "react-router-dom@npm:7.18.2"
   dependencies:
-    react-router: "npm:7.18.1"
+    react-router: "npm:7.18.2"
   peerDependencies:
     react: ">=18"
     react-dom: ">=18"
-  checksum: 10c0/5efb99f2f09cecf445788f3459a8f5ff952ed85061f2d40f8de25fdd6e2ce6aeea8e40e4bacad470ea42a45d0460feb6fb59c62f14d87720b43d5c96cd9b2cb6
+  checksum: 10c0/234926d664a5b5c355aeb8642f505784facbb63321231428f24e5ea7fb859876443082d63eef4b8167a01ea8d8dab231a666736343c3e4a86a05b2fcb88927b5
   languageName: node
   linkType: hard
 
-"react-router@npm:7.18.1":
-  version: 7.18.1
-  resolution: "react-router@npm:7.18.1"
+"react-router@npm:7.18.2":
+  version: 7.18.2
+  resolution: "react-router@npm:7.18.2"
   dependencies:
     cookie: "npm:^1.0.1"
     set-cookie-parser: "npm:^2.6.0"
@@ -28931,7 +28931,7 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10c0/1a559de58d656bad5565f2232e4f4fab7e9f5282dfaf95bc24f195a06e7e85b281077fe5c21ed3ff527e3d90d930447e0d0bb0f0713950d2a56ad0f0377a7d09
+  checksum: 10c0/513b04adf020fcf95124557418e003d16b175765045332858d5817b045e49dfe33b529c4871c57b0cddf24fa5432589ffc45d1a9a5b398b069f02adb755fab15
   languageName: node
   linkType: hard
 
