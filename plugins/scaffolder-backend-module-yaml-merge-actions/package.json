@@ -32,8 +32,8 @@
   "dependencies": {
     "@backstage/backend-plugin-api": "backstage:^",
     "@backstage/plugin-scaffolder-node": "backstage:^",
-    "fs-extra": "^11.3.6",
-    "yaml": "^2.9.0"
+    "fs-extra": "^11.4.0",
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@backstage/backend-test-utils": "backstage:^",
