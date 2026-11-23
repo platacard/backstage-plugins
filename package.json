@@ -37,12 +37,12 @@
     "@changesets/cli": "^2.31.0",
     "@jest/environment-jsdom-abstract": "^30.5.2",
     "@octokit/rest": "^19.0.3",
-    "@playwright/test": "^1.63.0",
+    "@playwright/test": "^1.65.1",
     "@types/jest": "^30.0.0",
     "jest": "^30.5.2",
     "jsdom": "^29.1.1",
     "node-gyp": "^13.1.0",
-    "prettier": "^3.9.8",
+    "prettier": "^3.10.1",
     "typescript": "~5.8.0"
   },
   "resolutions": {
